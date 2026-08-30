@@ -86,7 +86,7 @@ export function AboutSection() {
           {/* Subtle glow effect */}
           <div className="absolute top-0 right-0 w-56 h-56 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-zinc-800/80">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6">
             <div className="space-y-2">
               <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded border border-emerald-500/20 inline-block font-medium">
                 ACADEMIC FOUNDATION
