@@ -5,10 +5,12 @@ import { ServicesSection } from "@/components/sections/services";
 import { WorkSection } from "@/components/sections/work";
 import { ContactSection } from "@/components/sections/contact";
 import { Footer } from "@/components/layout/footer";
+import { ScrollSpyNav } from "@/components/ui/scroll-spy-nav";
 
 export default function HomePage() {
   return (
     <main className="relative z-10 min-h-screen text-white">
+      <ScrollSpyNav />
       <HeroSection />
       <AboutSection />
       <WhyMeSection />
