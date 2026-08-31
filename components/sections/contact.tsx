@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/context/language-context";
 import { FadeIn } from "@/components/ui/fade-in";
 
 export function ContactSection() {
+  const { language } = useLanguage();
+
   const [formData, setFormData] = useState({
     email: "",
     company: "",
@@ -13,6 +16,63 @@ export function ContactSection() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const content = {
+    en: {
+      badge: "05 // GET IN TOUCH",
+      heading: "Let's Build Something Scalable",
+      subheading:
+        "Have a project in mind, need a security audit, or want to discuss a full-stack solution? Drop a message below.",
+      successTitle: "Message Sent Successfully!",
+      successMessage:
+        "Thank you for reaching out. I will review your project details and get back to you shortly.",
+      sendAnother: "Send Another Message",
+      labels: {
+        email: "Email Address",
+        company: "Company / Organization Name",
+        phone: "Phone Number",
+        optional: "(Optional)",
+        message: "Tell us about your project",
+      },
+      placeholders: {
+        email: "john@example.com",
+        phone: "+1 (555) 000-0000",
+        message: "Describe your scope, goals, timeline, or technical requirements...",
+      },
+      buttons: {
+        submit: "Send Message",
+        submitting: "Sending...",
+      },
+    },
+    ar: {
+      badge: "05 // تواصل معي",
+      heading: "لنبتكر شيئاً قابلاً للتوسع",
+      subheading:
+        "هل لديك فكرة مشروع، تحتاج إلى فحص أمني، أو ترغب في مناقشة حلول الويب ؟ اترك رسالتك أدناه.",
+      successTitle: "تم إرسال الرسالة بنجاح!",
+      successMessage:
+        "شكراً لتواصلك. سأقوم بمراجعة تفاصيل مشروعك والرد عليك في أقرب وقت.",
+      sendAnother: "إرسال رسالة أخرى",
+      labels: {
+        email: "البريد الإلكتروني",
+        company: "اسم الشركة / المؤسسة",
+        phone: "رقم الهاتف",
+        optional: "(اختياري)",
+        message: "حدثنا عن مشروعك",
+      },
+      placeholders: {
+        email: "john@example.com",
+        phone: "+1 (555) 000-0000",
+        message: "اشرح نطاق مشروعك، أهدافك، الجدول الزمني، أو المتطلبات التقنية...",
+      },
+      buttons: {
+        submit: "إرسال الرسالة",
+        submitting: "جاري الإرسال...",
+      },
+    },
+  };
+
+  const t = content[language];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,13 +105,13 @@ export function ContactSection() {
       <FadeIn delay={0.1}>
         <div className="mb-10 text-center relative z-10">
           <span className="text-xs font-mono uppercase tracking-widest text-emerald-400/90 font-medium">
-            05 // Get In Touch
+            {t.badge}
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-3">
-            Let&apos;s Build Something Scalable
+            {t.heading}
           </h2>
           <p className="text-sm sm:text-base text-zinc-400 font-light mt-3 max-w-lg mx-auto">
-            Have a project in mind, need a security audit, or want to discuss a full-stack solution? Drop a message below.
+            {t.subheading}
           </p>
         </div>
       </FadeIn>
@@ -66,15 +126,15 @@ export function ContactSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-white">Message Sent Successfully!</h3>
+              <h3 className="text-xl font-bold text-white">{t.successTitle}</h3>
               <p className="text-xs sm:text-sm text-zinc-400 max-w-sm mx-auto leading-relaxed">
-                Thank you for reaching out. I will review your project details and get back to you shortly.
+                {t.successMessage}
               </p>
               <button
                 onClick={() => setIsSubmitted(false)}
                 className="mt-4 px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-mono text-white transition-colors"
               >
-                Send Another Message
+                {t.sendAnother}
               </button>
             </div>
           ) : (
@@ -82,7 +142,7 @@ export function ContactSection() {
               {/* Email Address */}
               <div className="space-y-2">
                 <label htmlFor="email" className="text-xs font-mono text-zinc-400">
-                  Email Address <span className="text-emerald-400">*</span>
+                  {t.labels.email} <span className="text-emerald-400">*</span>
                 </label>
                 <input
                   type="email"
@@ -91,7 +151,7 @@ export function ContactSection() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="john@example.com"
+                  placeholder={t.placeholders.email}
                   className="w-full px-4 py-3 rounded-xl bg-zinc-950/80 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/60 transition-all"
                 />
               </div>
@@ -100,15 +160,15 @@ export function ContactSection() {
                 {/* Company Name */}
                 <div className="space-y-2">
                   <label htmlFor="company" className="text-xs font-mono text-zinc-400">
-                    Company / Organization Name
+                    {t.labels.company} <span className="text-emerald-400">*</span>
                   </label>
                   <input
                     type="text"
                     id="company"
                     name="company"
+                    required
                     value={formData.company}
                     onChange={handleChange}
-                    placeholder="Acme Inc."
                     className="w-full px-4 py-3 rounded-xl bg-zinc-950/80 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/60 transition-all"
                   />
                 </div>
@@ -116,7 +176,7 @@ export function ContactSection() {
                 {/* Phone Number (Optional) */}
                 <div className="space-y-2">
                   <label htmlFor="phone" className="text-xs font-mono text-zinc-400">
-                    Phone Number <span className="text-zinc-500 text-[10px]">(Optional)</span>
+                    {t.labels.phone} <span className="text-zinc-500 text-[10px]">{t.labels.optional}</span>
                   </label>
                   <input
                     type="tel"
@@ -124,7 +184,7 @@ export function ContactSection() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+1 (555) 000-0000"
+                    placeholder={t.placeholders.phone}
                     className="w-full px-4 py-3 rounded-xl bg-zinc-950/80 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/60 transition-all"
                   />
                 </div>
@@ -133,7 +193,7 @@ export function ContactSection() {
               {/* Message / Project Details */}
               <div className="space-y-2">
                 <label htmlFor="message" className="text-xs font-mono text-zinc-400">
-                  Tell us about your project <span className="text-emerald-400">*</span>
+                  {t.labels.message} <span className="text-emerald-400">*</span>
                 </label>
                 <textarea
                   id="message"
@@ -142,7 +202,7 @@ export function ContactSection() {
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Describe your scope, goals, timeline, or technical requirements..."
+                  placeholder={t.placeholders.message}
                   className="w-full px-4 py-3 rounded-xl bg-zinc-950/80 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/60 transition-all resize-none"
                 />
               </div>
@@ -156,10 +216,10 @@ export function ContactSection() {
                 {isSubmitting ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
-                    <span className="font-mono text-xs uppercase tracking-wider">Sending...</span>
+                    <span className="font-mono text-xs uppercase tracking-wider">{t.buttons.submitting}</span>
                   </div>
                 ) : (
-                  <span className="font-mono text-xs uppercase tracking-wider">Send Message</span>
+                  <span className="font-mono text-xs uppercase tracking-wider">{t.buttons.submit}</span>
                 )}
               </button>
             </form>

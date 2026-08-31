@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FadeIn } from "@/components/ui/fade-in";
 import { siteConfig } from "@/config/site";
+import { useLanguage } from "@/context/language-context";
 
 // Social Icons
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -39,7 +40,74 @@ const SOCIAL_LINKS = [
   { name: "Email", href: siteConfig.links.email, icon: EmailIcon },
 ];
 
+const FOOTER_TRANSLATIONS = {
+  en: {
+    description: "Web applications, intelligent systems, and security-driven digital products.",
+    availability: siteConfig.availability,
+    allRightsReserved: "All rights reserved.",
+    columns: [
+      {
+        title: "Services",
+        links: [
+          { name: "Software Architecture", href: "#services" },
+          { name: "AI & ML Integration", href: "#services" },
+          { name: "Full-Stack Systems", href: "#services" },
+          { name: "Security & Auditing", href: "#services" },
+        ],
+      },
+      {
+        title: "Explore",
+        links: [
+          { name: "Featured Projects", href: "#projects" },
+          { name: "Engineering Process", href: "#process" },
+          { name: "Tech Stack", href: "#stack" },
+        ],
+      },
+      {
+        title: "Get Started",
+        links: [
+          { name: "Start a Project", href: "#contact" },
+          { name: "About Me", href: "#about" },
+        ],
+      },
+    ],
+  },
+  ar: {
+    description: "تطبيقات الويب، الأنظمة الذكية، والمنتجات الرقمية القائمة على الأمان الحصين.",
+    availability: "متاح للمشاريع الجديدة والمستقلة",
+    allRightsReserved: "جميع الحقوق محفوظة.",
+    columns: [
+      {
+        title: "الخدمات",
+        links: [
+          { name: "معمارية البرمجيات", href: "#services" },
+          { name: "تكامل الذكاء الاصطناعي وتعلم الآلة", href: "#services" },
+          { name: "أنظمة التطوير الكامل (Full-Stack)", href: "#services" },
+          { name: "الأمان والفحص الأمني", href: "#services" },
+        ],
+      },
+      {
+        title: "استكشف",
+        links: [
+          { name: "أبرز المشاريع", href: "#projects" },
+          { name: "منهجية الهندسة البرمجية", href: "#process" },
+          { name: "تقنيات العمل", href: "#stack" },
+        ],
+      },
+      {
+        title: "ابدأ الآن",
+        links: [
+          { name: "ابدأ مشروعك", href: "#contact" },
+          { name: "نبذة عني", href: "#about" },
+        ],
+      },
+    ],
+  },
+};
+
 export function Footer() {
+  const { language } = useLanguage();
+  const t = FOOTER_TRANSLATIONS[language];
   const currentYear = new Date().getFullYear();
 
   return (
@@ -49,7 +117,7 @@ export function Footer() {
       <div className="max-w-6xl mx-auto space-y-12">
         <FadeIn delay={0.1}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start justify-between">
-            {/* Brand Block - Identical to Header */}
+            {/* Brand Block */}
             <div className="lg:col-span-5 space-y-4">
               <Link href="#" className="flex items-center gap-2 group">
                 <span className="text-xl font-bold tracking-tight text-white group-hover:text-emerald-400 transition-colors">
@@ -59,7 +127,7 @@ export function Footer() {
               </Link>
 
               <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed max-w-sm">
-                {siteConfig.description}
+                {t.description}
               </p>
 
               {/* Social Icon Links */}
@@ -86,7 +154,7 @@ export function Footer() {
 
             {/* Links Grid Columns */}
             <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
-              {siteConfig.footerColumns.map((column) => (
+              {t.columns.map((column) => (
                 <div key={column.title} className="space-y-3">
                   <h3 className="text-xs font-mono uppercase tracking-widest text-emerald-400/90 font-medium">
                     {column.title}
@@ -112,14 +180,14 @@ export function Footer() {
         {/* Bottom Bar */}
         <FadeIn delay={0.2}>
           <div className="pt-8 border-t border-zinc-800/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
-            <p>© {currentYear} {siteConfig.fullName}. All rights reserved.</p>
+            <p>© {currentYear} {siteConfig.fullName}. {t.allRightsReserved}</p>
 
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
-              <span className="text-zinc-400 text-[11px]">{siteConfig.availability}</span>
+              <span className="text-zinc-400 text-[11px]">{t.availability}</span>
             </div>
           </div>
         </FadeIn>

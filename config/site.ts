@@ -12,7 +12,7 @@ export const siteConfig = {
     github: "https://github.com/Alhasan-Othman",
     linkedin: "https://linkedin.com/in/your-profile",
     whatsapp: "https://wa.me/1234567890",
-    email: "mailto:contact@alhasan.dev",
+    email: "mailto:alhasan.othman@gmail.com",
   },
   footerColumns: [
     {

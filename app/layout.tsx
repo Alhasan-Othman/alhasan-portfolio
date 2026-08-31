@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { fontSans, fontMono } from "@/lib/fonts";
+import { LanguageProvider } from "@/context/language-context";
 import { Header } from "@/components/layout/header";
 import "./globals.css";
 
@@ -21,8 +22,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-black text-white antialiased">
-        <Header />
-        {children}
+        <LanguageProvider>
+          <Header />
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

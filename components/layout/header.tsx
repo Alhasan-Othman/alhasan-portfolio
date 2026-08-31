@@ -2,20 +2,30 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-
-const NAV_ITEMS = [
-  { name: "About", href: "#about" },
-  { name: "Why Me", href: "#why-me" },
-  { name: "Services", href: "#services" },
-  { name: "Work", href: "#work" },
-  { name: "Contact", href: "#contact" },
-];
+import { useLanguage } from "@/context/language-context";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [lang, setLang] = useState<"EN" | "AR">("EN");
   const [isDark, setIsDark] = useState(true);
+
+  const { language, toggleLanguage } = useLanguage();
+
+  const navItems = language === "ar" 
+    ? [
+        { name: "من أنا", href: "#about" },
+        { name: "لماذا أنا", href: "#why-me" },
+        { name: "الخدمات", href: "#services" },
+        { name: "المشاريع", href: "#work" },
+        { name: "تواصل معي", href: "#contact" },
+      ]
+    : [
+        { name: "About", href: "#about" },
+        { name: "Why Me", href: "#why-me" },
+        { name: "Services", href: "#services" },
+        { name: "Work", href: "#work" },
+        { name: "Contact", href: "#contact" },
+      ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,10 +35,6 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const toggleLanguage = () => {
-    setLang((prev) => (prev === "EN" ? "AR" : "EN"));
-  };
 
   const toggleTheme = () => {
     setIsDark((prev) => !prev);
@@ -53,8 +59,8 @@ export function Header() {
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-8">
           <ul className="flex items-center gap-7 text-sm font-mono text-zinc-300">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.name}>
+            {navItems.map((item) => (
+              <li key={item.href}>
                 <Link
                   href={item.href}
                   className="hover:text-emerald-400 transition-colors py-1"
@@ -66,19 +72,19 @@ export function Header() {
           </ul>
 
           {/* Controls: Language Toggle & Direct Theme Toggle */}
-          <div className="flex items-center gap-3 pl-4 border-l border-zinc-800">
+          <div className="flex items-center gap-3 ltr:pl-4 rtl:pr-4 ltr:border-l rtl:border-r border-zinc-800">
             {/* Language Toggle Button */}
             <button
               onClick={toggleLanguage}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-emerald-500/40 text-xs font-mono text-zinc-300 hover:text-white transition-all"
               title="Toggle Language"
             >
-              <span className={lang === "EN" ? "text-emerald-400 font-bold" : "text-zinc-500"}>EN</span>
+              <span className={language === "en" ? "text-emerald-400 font-bold" : "text-zinc-500"}>EN</span>
               <span className="text-zinc-600">/</span>
-              <span className={lang === "AR" ? "text-emerald-400 font-bold" : "text-zinc-500"}>AR</span>
+              <span className={language === "ar" ? "text-emerald-400 font-bold" : "text-zinc-500"}>AR</span>
             </button>
 
-            {/* Direct Theme Toggle Button (Dark / Light Switcher) */}
+            {/* Direct Theme Toggle Button */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-emerald-500/40 text-zinc-300 hover:text-white transition-all flex items-center justify-center"
@@ -100,7 +106,6 @@ export function Header() {
 
         {/* Mobile Controls & Hamburger Toggle */}
         <div className="flex items-center gap-2 md:hidden">
-          {/* Mobile Direct Theme Toggle */}
           <button
             onClick={toggleTheme}
             className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300"
@@ -117,15 +122,13 @@ export function Header() {
             )}
           </button>
 
-          {/* Mobile Language Button */}
           <button
             onClick={toggleLanguage}
             className="px-2.5 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300"
           >
-            {lang === "EN" ? "EN" : "AR"}
+            {language.toUpperCase()}
           </button>
 
-          {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white focus:outline-none"
@@ -148,8 +151,8 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden px-6 pt-4 pb-6 bg-zinc-950/95 border-b border-zinc-800 backdrop-blur-xl">
           <ul className="flex flex-col gap-4 text-base font-mono text-zinc-300">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.name}>
+            {navItems.map((item) => (
+              <li key={item.href}>
                 <Link
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
