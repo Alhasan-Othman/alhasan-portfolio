@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { useLanguage } from '@/context/language-context';
 
 export interface DepthItem {
   id: string;
@@ -44,6 +45,8 @@ export default function DepthCarousel({
   showIndicators = true,
   className = ''
 }: DepthCarouselProps) {
+  const { language } = useLanguage();
+  const isAr = language === 'ar';
   const count = items.length;
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -159,7 +162,6 @@ export default function DepthCarousel({
 
   const navigateBy = useCallback((step: number) => setFocus(focusRef.current + step, true), [setFocus]);
 
-  // Dynamic Auto-Scaling for Mobile screens
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -169,12 +171,10 @@ export default function DepthCarousel({
       const cfg = cfgRef.current;
 
       if (containerWidth < 640) {
-        // Mobile screen adjustments
         const targetWidth = containerWidth * 0.88;
         scaleRef.current = clamp(targetWidth / cfg.cardWidth, 0.5, 0.95);
         responsiveSpreadRef.current = cfg.spread * 0.65;
       } else {
-        // Desktop / Tablet adjustments
         const needed = cfg.cardWidth + Math.abs(cfg.spread) * 1.8;
         scaleRef.current = clamp(containerWidth / needed, 0.65, 1);
         responsiveSpreadRef.current = cfg.spread;
@@ -251,85 +251,114 @@ export default function DepthCarousel({
       onPointerCancel={onPointerEnd}
     >
       <div className="absolute inset-0 [transform-style:preserve-3d]">
-        {items.map((item, i) => (
-          <div
-            key={item.id || i}
-            ref={el => { cardRefs.current[i] = el; }}
-            style={{ 
-              width: cardWidth, 
-              height: cardHeight, 
-              borderRadius: radius,
-              backfaceVisibility: 'hidden'
-            }}
-            className="absolute top-1/2 left-1/2 overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl transition-shadow duration-300"
-            onClick={() => {
-              if (!dragRef.current?.moved) setFocus(i, true);
-            }}
-          >
-            {/* Card Content */}
-            <article className="w-full h-full flex flex-col justify-between text-left p-5 sm:p-6 space-y-3 sm:space-y-4 bg-zinc-950 text-zinc-100">
-              
-              {/* Image Banner */}
-              <a
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative block w-full h-40 sm:h-48 rounded-xl overflow-hidden group border border-zinc-800 bg-zinc-900 shrink-0"
-                onClick={(e) => {
-                  if (active !== i) e.preventDefault();
-                }}
+        {items.map((item, i) => {
+          const hasLink = Boolean(item.link && item.link.trim() !== '' && item.link !== '#');
+
+          return (
+            <div
+              key={item.id || i}
+              ref={el => { cardRefs.current[i] = el; }}
+              style={{ 
+                width: cardWidth, 
+                height: cardHeight, 
+                borderRadius: radius,
+                backfaceVisibility: 'hidden'
+              }}
+              className="absolute top-1/2 left-1/2 overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl transition-shadow duration-300"
+              onClick={() => {
+                if (!dragRef.current?.moved) setFocus(i, true);
+              }}
+            >
+              {/* Card Content */}
+              <article 
+                className={`w-full h-full flex flex-col justify-between p-5 sm:p-6 space-y-3 sm:space-y-4 bg-zinc-950 text-zinc-100 ${
+                  isAr ? 'text-right' : 'text-left'
+                }`}
+                dir={isAr ? 'rtl' : 'ltr'}
               >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
                 
-                <span className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-zinc-950/90 text-emerald-400 border border-emerald-500/30 text-[11px] sm:text-xs font-mono px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md font-medium">
-                  {item.category}
-                </span>
+                {/* Image Banner */}
+                {hasLink ? (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative block w-full h-40 sm:h-48 rounded-xl overflow-hidden group border border-zinc-800 bg-zinc-900 shrink-0 cursor-pointer"
+                    onClick={(e) => {
+                      if (active !== i) e.preventDefault();
+                    }}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    
+                    <span className={`absolute top-2.5 sm:top-3 bg-zinc-950/90 text-emerald-400 border border-emerald-500/30 text-[11px] sm:text-xs font-mono px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md font-medium z-10 ${
+                      isAr ? 'right-2.5 sm:right-3' : 'left-2.5 sm:left-3'
+                    }`}>
+                      {item.category}
+                    </span>
 
-                <span className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs font-mono text-white font-semibold gap-2">
-                  View Live Project ↗
-                </span>
-              </a>
+                    <span className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs font-mono text-white font-semibold gap-2">
+                      {isAr ? 'معاينة المشروع ' : 'View Project '}
+                    </span>
+                  </a>
+                ) : (
+                  <div className="relative block w-full h-40 sm:h-48 rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900 shrink-0">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                    />
+                    
+                    <span className={`absolute top-2.5 sm:top-3 bg-zinc-950/90 text-emerald-400 border border-emerald-500/30 text-[11px] sm:text-xs font-mono px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md font-medium ${
+                      isAr ? 'right-2.5 sm:right-3' : 'left-2.5 sm:left-3'
+                    }`}>
+                      {item.category}
+                    </span>
+                  </div>
+                )}
 
-              {/* Text Info */}
-              <div className="flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
-                <div className="space-y-1 sm:space-y-1.5">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-zinc-300 font-normal leading-relaxed line-clamp-2">
-                    {item.description}
-                  </p>
+                {/* Text Info */}
+                <div className="flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
+                  <div className="space-y-1 sm:space-y-1.5">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-zinc-300 font-normal leading-relaxed line-clamp-2">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  {/* Features / Highlights */}
+                  {item.features && item.features.length > 0 && (
+                    <div className="space-y-1 sm:space-y-1.5 pt-2 sm:pt-3 border-t border-zinc-900">
+                      <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
+                        {isAr ? 'أبرز المميزات:' : 'Highlights:'}
+                      </p>
+                      <ul className="space-y-1">
+                        {item.features.map((feat, fIdx) => (
+                          <li key={fIdx} className="text-[11px] sm:text-xs font-mono text-zinc-200 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                            <span className="truncate">{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
-                {/* Features */}
-                <div className="space-y-1 sm:space-y-1.5 pt-2 sm:pt-3 border-t border-zinc-900">
-                  <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
-                    Highlights:
-                  </p>
-                  <ul className="space-y-1">
-                    {item.features.map((feat, fIdx) => (
-                      <li key={fIdx} className="text-[11px] sm:text-xs font-mono text-zinc-200 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                        <span className="truncate">{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              </article>
 
-            </article>
-
-            {/* Darken Overlay for non-active cards */}
-            <span
-              ref={el => { overlayRefs.current[i] = el; }}
-              className="absolute inset-0 opacity-0 pointer-events-none bg-black transition-opacity duration-300"
-            />
-          </div>
-        ))}
+              {/* Darken Overlay for non-active cards */}
+              <span
+                ref={el => { overlayRefs.current[i] = el; }}
+                className="absolute inset-0 opacity-0 pointer-events-none bg-black transition-opacity duration-300"
+              />
+            </div>
+          );
+        })}
       </div>
 
       {/* Navigation Controls Bar */}
@@ -338,11 +367,11 @@ export default function DepthCarousel({
           {showControls && (
             <button
               type="button"
-              onClick={() => navigateBy(-1)}
+              onClick={() => navigateBy(isAr ? 1 : -1)}
               className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white hover:border-emerald-500/50 transition-all font-mono text-xs"
               aria-label="Previous Slide"
             >
-              ←
+              {isAr ? '→' : '←'}
             </button>
           )}
 
@@ -365,11 +394,11 @@ export default function DepthCarousel({
           {showControls && (
             <button
               type="button"
-              onClick={() => navigateBy(1)}
+              onClick={() => navigateBy(isAr ? -1 : 1)}
               className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white hover:border-emerald-500/50 transition-all font-mono text-xs"
               aria-label="Next Slide"
             >
-              →
+              {isAr ? '←' : '→'}
             </button>
           )}
         </div>

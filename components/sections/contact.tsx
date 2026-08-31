@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useLanguage } from "@/context/language-context";
 import { FadeIn } from "@/components/ui/fade-in";
+import { sendContactMessage } from "@/app/actions/contact";
 
 export function ContactSection() {
   const { language } = useLanguage();
@@ -14,8 +15,9 @@ export function ContactSection() {
     message: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const content = {
     en: {
@@ -74,16 +76,29 @@ export function ContactSection() {
 
   const t = content[language];
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setErrorMessage(null);
 
-    // Simulate network request
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    const payload = new FormData();
+    payload.append("company", formData.company);
+    payload.append("email", formData.email);
+    payload.append("phone", formData.phone);
+    payload.append("content", formData.message); // نرسل الـ message باسم content ليتوافق مع الـ Action
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ email: "", company: "", phone: "", message: "" });
+    startTransition(async () => {
+      const result = await sendContactMessage(
+        { success: false, message: "" },
+        payload
+      );
+
+      if (result.success) {
+        setIsSubmitted(true);
+        setFormData({ email: "", company: "", phone: "", message: "" });
+      } else {
+        setErrorMessage(result.message);
+      }
+    });
   };
 
   const handleChange = (
@@ -98,10 +113,8 @@ export function ContactSection() {
       id="contact"
       className="relative w-full py-24 px-6 md:px-12 max-w-3xl mx-auto overflow-hidden"
     >
-      {/* Background Accent Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none z-0" />
 
-      {/* Section Header */}
       <FadeIn delay={0.1}>
         <div className="mb-10 text-center relative z-10">
           <span className="text-xs font-mono uppercase tracking-widest text-emerald-400/90 font-medium">
@@ -116,7 +129,6 @@ export function ContactSection() {
         </div>
       </FadeIn>
 
-      {/* Contact Form Card */}
       <FadeIn delay={0.2} className="relative z-10">
         <div className="p-6 sm:p-10 rounded-2xl bg-zinc-900/60 border border-zinc-800 backdrop-blur-sm shadow-2xl relative">
           {isSubmitted ? (
@@ -139,6 +151,12 @@ export function ContactSection() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
+              {errorMessage && (
+                <div className="p-3 text-xs font-mono text-red-400 bg-red-950/40 border border-red-800/60 rounded-xl">
+                  {errorMessage}
+                </div>
+              )}
+
               {/* Email Address */}
               <div className="space-y-2">
                 <label htmlFor="email" className="text-xs font-mono text-zinc-400">
@@ -173,7 +191,7 @@ export function ContactSection() {
                   />
                 </div>
 
-                {/* Phone Number (Optional) */}
+                {/* Phone Number */}
                 <div className="space-y-2">
                   <label htmlFor="phone" className="text-xs font-mono text-zinc-400">
                     {t.labels.phone} <span className="text-zinc-500 text-[10px]">{t.labels.optional}</span>
@@ -190,7 +208,7 @@ export function ContactSection() {
                 </div>
               </div>
 
-              {/* Message / Project Details */}
+              {/* Message */}
               <div className="space-y-2">
                 <label htmlFor="message" className="text-xs font-mono text-zinc-400">
                   {t.labels.message} <span className="text-emerald-400">*</span>
@@ -210,10 +228,10 @@ export function ContactSection() {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isPending}
                 className="w-full py-3.5 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.2)] disabled:opacity-50 disabled:cursor-not-allowed mt-4"
               >
-                {isSubmitting ? (
+                {isPending ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
                     <span className="font-mono text-xs uppercase tracking-wider">{t.buttons.submitting}</span>

@@ -1,132 +1,60 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useLanguage } from "@/context/language-context";
 import { FadeIn } from "@/components/ui/fade-in";
 import DepthCarousel, { DepthItem } from "@/components/ui/visuals/DepthCarousel";
+import { getProjects } from "@/lib/projects";
+import { Project } from "@/types";
 
 export function WorkSection() {
   const { language } = useLanguage();
+  const [dbProjects, setDbProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const content = {
-    en: {
-      badge: "04 // SELECTED WORK",
-      heading: "FEATURED PROJECTS",
-      projects: [
-        {
-          id: "al-saad-roaster",
-          title: "Al Saad Roaster",
-          category: "E-Commerce & Web",
-          description:
-            "Explore our premium roasted products, nuts, and savory coffee selections with a seamless modern UI.",
-          link: "https://alsaad-roaster.vercel.app/",
-          features: [
-            "Modern UI/UX Design System",
-            "Scalable Architecture",
-            "High Conversion Optimization",
-          ],
-          image:
-            "https://basma-company-api.vercel.app/api/media/file/5e1c455c-d81f-4960-bea9-b0611edf19c0.png",
-        },
-        {
-          id: "vulnerability-scanner",
-          title: "AI Security Scanner",
-          category: "Security & AI System",
-          description:
-            "Automated DAST engine with neural network payload classification and real-time threat detection.",
-          link: "https://example.com/scanner",
-          features: [
-            "ASP.NET Core 8 & Playwright",
-            "Neural network classification",
-            "Dynamic execution tracing",
-          ],
-          image:
-            "https://placehold.co/600x400/18181b/10b981?text=AI+Security+Scanner",
-        },
-        {
-          id: "yasmineh-alsaeed",
-          title: "Yasmineh-Alsaeed Motors",
-          category: "Enterprise Fleet",
-          description:
-            "Multilingual automotive digital showroom and corporate fleet maintenance management engine.",
-          link: "https://example.com/motors",
-          features: [
-            "Laravel 11 & Blade Engine",
-            "Multilingual catalog (EN/AR)",
-            "Automated maintenance logs",
-          ],
-          image:
-            "https://placehold.co/600x400/18181b/3b82f6?text=Motors+Fleet+System",
-        },
-      ] as DepthItem[],
-    },
-    ar: {
-      badge: "04 // الأعمال المختارة",
-      heading: "المشاريع المميزة",
-      projects: [
-        {
-          id: "al-saad-roaster",
-          title: "محمصة ومكسرات السعد",
-          category: "تجارة إلكترونية وويب",
-          description:
-            "منصة إلكترونية تتيح استعراض منتجات المحامص والمكسرات والقهوة الفاخرة مع واجهة مستخدم حديثة وسلسة.",
-          link: "https://alsaad-roaster.vercel.app/",
-          features: [
-            "نظام تصميم حديث ومتكامل (UI/UX)",
-            "بنية برمجية قابلة للتوسع",
-            "تحسين معدلات التحويل وزيادة المبيعات",
-          ],
-          image:
-            "https://basma-company-api.vercel.app/api/media/file/5e1c455c-d81f-4960-bea9-b0611edf19c0.png",
-        },
-        {
-          id: "vulnerability-scanner",
-          title: "فاحص الثغرات بالذكاء الاصطناعي",
-          category: "الأمان والذكاء الاصطناعي",
-          description:
-            "محرك فحص ديناميكي أوتوماتيكي (DAST) مع تصنيف الحمولة الضارة عبر شبكات عصبية وكشف التهديدات فورياً.",
-          link: "https://example.com/scanner",
-          features: [
-            "ASP.NET Core 8 & Playwright",
-            "تصنيف الهجمات عبر الشبكات العصبية",
-            "تتبع ودراسة التنفيذ الديناميكي",
-          ],
-          image:
-            "https://placehold.co/600x400/18181b/10b981?text=AI+Security+Scanner",
-        },
-        {
-          id: "yasmineh-alsaeed",
-          title: "ياسمينة السعيد للسيارات",
-          category: "إدارة أسطول وحلول شركات",
-          description:
-            "معرض رقمي للسيارات متعدد اللغات مع محرك لإدارة وتتبع سجلات الصيانة لأسطول الشركات.",
-          link: "https://example.com/motors",
-          features: [
-            "Laravel 11 & Blade Engine",
-            "كتالوج متعدد اللغات (عربي/إنجليزي)",
-            "سجلات صيانة مؤتمتة",
-          ],
-          image:
-            "https://placehold.co/600x400/18181b/3b82f6?text=Motors+Fleet+System",
-        },
-      ] as DepthItem[],
-    },
-  };
+  useEffect(() => {
+    async function fetchProjects() {
+      const projects = await getProjects();
+      setDbProjects(projects);
+      setLoading(false);
+    }
+    fetchProjects();
+  }, []);
 
-  const t = content[language];
+  const badgeText = language === "ar" ? "04 // الأعمال المختارة" : "04 // SELECTED WORK";
+  const headingText = language === "ar" ? "المشاريع المميزة" : "FEATURED PROJECTS";
+
+  // تحويل البيانات ديناميكياً مع معالجة الرابط والـ Badge والاتجاهات
+  const formattedProjects: DepthItem[] = dbProjects.map((item) => {
+    const isAr = language === "ar";
+
+    return {
+      id: item.id,
+      title: isAr ? item.title_ar : item.title_en,
+      // قراءة الـ Badge ديناميكياً من الداتابيز
+      category: isAr ? (item.category_ar || "مشروع مميز") : (item.category_en || "Featured Project"),
+      description: isAr ? item.description_ar : item.description_en,
+      // تمرير الرابط فقط إذا كان موجوذاً، وإلا نمرر نصاً فارغاً لإخفاء زر View Live Project
+      link: item.demo_url ? item.demo_url.trim() : "",
+      features: isAr ? (item.highlights_ar || []) : (item.highlights_en || []),
+      image: item.image_url || "https://placehold.co/600x400/18181b/10b981?text=Project",
+    };
+  });
 
   return (
     <section
       id="work"
       className="relative w-full pt-8 sm:pt-10 pb-6 px-4 sm:px-8 max-w-7xl mx-auto space-y-4 overflow-hidden"
+      dir={language === "ar" ? "rtl" : "ltr"}
     >
       <FadeIn delay={0.1}>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4">
           <div>
             <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-medium">
-              {t.badge}
+              {badgeText}
             </span>
             <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white mt-1">
-              {t.heading}
+              {headingText}
             </h2>
           </div>
         </div>
@@ -134,15 +62,26 @@ export function WorkSection() {
 
       <FadeIn delay={0.2}>
         <div className="w-full h-[540px] sm:h-[600px] relative flex items-center justify-center">
-          <DepthCarousel
-            items={t.projects}
-            cardWidth={500}
-            cardHeight={500}
-            spread={280}
-            tilt={12}
-            duration={400}
-            loop={true}
-          />
+          {loading ? (
+            <div className="flex flex-col items-center justify-center gap-3 text-zinc-500 font-mono text-xs">
+              <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+              <span>[ LOADING PROJECTS... ]</span>
+            </div>
+          ) : formattedProjects.length > 0 ? (
+            <DepthCarousel
+              items={formattedProjects}
+              cardWidth={500}
+              cardHeight={500}
+              spread={280}
+              tilt={12}
+              duration={400}
+              loop={true}
+            />
+          ) : (
+            <div className="text-zinc-500 font-mono text-xs">
+              {language === "ar" ? "لا توجد مشاريع مضافة حالياً." : "No projects found."}
+            </div>
+          )}
         </div>
       </FadeIn>
     </section>
