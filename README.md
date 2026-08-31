@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+  <h1>ALHASAN.DEV</h1>
+  <p><strong>Software Developer & Security Specialist Portfolio</strong></p>
 
-First, run the development server:
+  <p>
+    A high-performance, modern, and security-driven digital portfolio built with Next.js 14, TypeScript, and Tailwind CSS.
+  </p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+  <p>
+    <a href="https://github.com/Alhasan-Othman"><strong>GitHub Profile</strong></a> •
+    <a href="alhasan.othman04@gmail.com"><strong>Contact Email</strong></a>
+  </p>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  <br />
+</div>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 About The Project
 
-## Learn More
+This repository contains the source code for my personal portfolio platform. It showcases web applications, full-stack systems, security-driven architecture, and engineering projects. Designed with a dark minimalist aesthetic, fluid animations, and complete responsiveness.
 
-To learn more about Next.js, take a look at the following resources:
+### ✨ Key Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **⚡ Modern Tech Stack**: Built on Next.js 14 App Router, TypeScript, and Tailwind CSS.
+- **🎨 Sleek Dark Theme**: Minimalist, security-focused UI with smooth micro-interactions.
+- **📱 Fully Responsive**: Optimized for all viewports from mobile devices to large desktop monitors.
+- **🌐 Dual-Language Ready**: Built-in support for English (EN) and Arabic (AR) toggling.
+- **🔒 Security & Performance**: Pre-configured headers, type safety, and optimized assets.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🛠️ Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components**: Framer Motion
+- **Deployment**: [Vercel](https://vercel.com/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🏁 Getting Started Locally
+
+Follow these steps to run the project on your local machine:
+
+### Prerequisites
+
+Make sure you have Node.js installed on your machine:
+
+`node -v` (Recommended: Node.js 18+)
+
+### Installation & Setup
+
+1. **Clone the repository:**
+   `git clone https://github.com/Alhasan-Othman/YOUR-REPO-NAME.git`
+   `cd YOUR-REPO-NAME`
+
+2. **Install dependencies:**
+   `npm install`
+
+3. **Run the development server:**
+   `npm run dev`
+
+4. Open `http://localhost:3000` in your browser to see the result.
+
+---
+
+## 📁 Project Structure
+
+```text
+.
+├── app/                  # Next.js App Router (pages & layout)
+│   ├── layout.tsx        # Main Root Layout
+│   ├── page.tsx          # Home Page
+│   └── globals.css       # Global CSS & Tailwind Directives
+├── components/           # Reusable UI components
+│   ├── layout/           # Header, Footer, Navigation
+│   └── ui/               # Buttons, Cards, Motion wrappers
+├── config/               # Site configuration & static data
+│   └── site.ts           # Central site configuration
+└── public/               # Static assets & icons
