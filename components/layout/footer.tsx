@@ -35,7 +35,6 @@ const EmailIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 const SOCIAL_LINKS = [
   { name: "GitHub", href: siteConfig.links.github, icon: GithubIcon },
-  { name: "LinkedIn", href: siteConfig.links.linkedin, icon: LinkedinIcon },
   { name: "WhatsApp", href: siteConfig.links.whatsapp, icon: WhatsappIcon },
   { name: "Email", href: siteConfig.links.email, icon: EmailIcon },
 ];

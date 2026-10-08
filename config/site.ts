@@ -11,7 +11,7 @@ export const siteConfig = {
   links: {
     github: "https://github.com/Alhasan-Othman",
     linkedin: "https://linkedin.com/in/your-profile",
-    whatsapp: "https://wa.me/1234567890",
+    whatsapp: "https://wa.me/+963938997544",
     email: "mailto:alhasan.othman@gmail.com",
   },
   footerColumns: [
