@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useLanguage } from '@/context/language-context';
 
@@ -29,7 +29,27 @@ interface DepthCarouselProps {
   className?: string;
 }
 
-const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
+interface CarouselConfig {
+  count: number;
+  spread: number;
+  tilt: number;
+  duration: number;
+  ease: string;
+  loop: boolean;
+  cardWidth: number;
+}
+
+interface DragState {
+  x: number;
+  startPos: number;
+  lastX: number;
+  lastT: number;
+  v: number;
+  moved: boolean;
+  id: number;
+}
+
+const clamp =(v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
 
 export default function DepthCarousel({
   items = [],
@@ -58,20 +78,17 @@ export default function DepthCarousel({
   const tweenRef = useRef<gsap.core.Tween | null>(null);
   const scaleRef = useRef(1);
   const responsiveSpreadRef = useRef(spread);
-  const cfgRef = useRef<any>({});
+  const cfgRef = useRef<CarouselConfig>({
+    count, spread, tilt, duration, ease, loop, cardWidth
+  });
 
-  const dragRef = useRef<any>(null);
+  const dragRef = useRef<DragState | null>(null);
   const [active, setActive] = useState(0);
 
-  cfgRef.current = {
-    count,
-    spread,
-    tilt,
-    duration,
-    ease,
-    loop,
-    cardWidth
-  };
+  // Keep the latest props available to callbacks without re-creating them
+  useLayoutEffect(() => {
+    cfgRef.current = { count, spread, tilt, duration, ease, loop, cardWidth };
+  });
 
   const layout = useCallback((pos: number) => {
     const cfg = cfgRef.current;

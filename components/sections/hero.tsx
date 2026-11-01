@@ -1,5 +1,6 @@
 "use client";
 
+import { siteConfig } from "@/config/site";
 import { useLanguage } from "@/context/language-context";
 import { FadeIn } from "@/components/ui/fade-in";
 import { LineWaves } from "@/components/ui/visuals/line-waves";
@@ -13,12 +14,14 @@ export function HeroSection() {
       title: "Software & Systems Engineer.",
       description: "Building high-security business systems, AI-integrated workflows, and scalable applications built for performance.",
       cta: "Let's Talk",
+      cvLabel: "Download CV",
     },
     ar: {
       name: "الحسن عثمان",
       title: "مهندس برمجيات وأنظمة.",
       description: "بناء أنظمة أعمال عالية الأمان، وسير عمل مدعوم بالذكاء الاصطناعي، وتطبيقات قابلة للتوسع ومصممة للأداء العالي.",
       cta: "تواصل معي",
+      cvLabel: "تحميل السيرة الذاتية",
     },
   };
 
@@ -51,12 +54,22 @@ export function HeroSection() {
 
         {/* CTA Button */}
         <FadeIn delay={0.3}>
-          <div className="pt-4 flex justify-start items-center">
+          <div className="pt-4 flex flex-wrap justify-start items-center gap-4">
             <a
               href="#contact"
               className="group relative inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white transition-all duration-300 ease-out bg-zinc-900/80 border border-zinc-700/80 rounded-xl backdrop-blur-md hover:bg-zinc-800 hover:border-zinc-300 hover:shadow-[0_0_25px_rgba(255,255,255,0.15)] hover:-translate-y-0.5 active:translate-y-0"
             >
               <span className="relative z-10 tracking-wide">{t.cta}</span>
+            </a>
+            <a
+              href={siteConfig.cv}
+              download
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-zinc-200 transition-all duration-300 border border-zinc-700/60 rounded-xl hover:text-white hover:border-zinc-300 hover:-translate-y-0.5 active:translate-y-0"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
+              </svg>
+              {t.cvLabel}
             </a>
           </div>
         </FadeIn>

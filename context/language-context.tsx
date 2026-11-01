@@ -19,6 +19,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const savedLang = localStorage.getItem("app_lang") as Language;
     if (savedLang && (savedLang === "en" || savedLang === "ar")) {
+      // Restore after hydration so server and client markup match on first render
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLanguageState(savedLang);
     }
   }, []);

@@ -13,12 +13,6 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M5.2 9.35h3.35v9.7H5.2v-9.7ZM6.88 4.95a1.9 1.9 0 1 1 0 3.8 1.9 1.9 0 0 1 0-3.8ZM10.65 9.35h3.2v1.32c.6-.93 1.66-1.58 3.2-1.58 2.34 0 3.95 1.52 3.95 4.78v5.18h-3.34v-4.62c0-1.54-.56-2.38-1.75-2.38-1.25 0-1.92.87-1.92 2.38v4.62h-3.34v-9.7Z" />
-  </svg>
-);
-
 const WhatsappIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />

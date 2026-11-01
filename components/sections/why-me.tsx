@@ -27,13 +27,6 @@ function TypewriterTerminal({ language }: { language: "en" | "ar" }) {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
 
-  // Reset typewriter sequence whenever language changes
-  useEffect(() => {
-    setCompletedSteps([]);
-    setCurrentLineIndex(0);
-    setCharIndex(0);
-  }, [language]);
-
   useEffect(() => {
     if (currentLineIndex >= steps.length) return;
 
@@ -172,7 +165,7 @@ export function WhyMeSection() {
                 <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
               </div>
             </div>
-            <TypewriterTerminal language={language} />
+            <TypewriterTerminal key={language} language={language} />
           </div>
         </FadeIn>
 

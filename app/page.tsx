@@ -6,8 +6,14 @@ import { WorkSection } from "@/components/sections/work";
 import { ContactSection } from "@/components/sections/contact";
 import { Footer } from "@/components/layout/footer";
 import { ScrollSpyNav } from "@/components/ui/scroll-spy-nav";
+import { getProjects } from "@/lib/projects";
 
-export default function HomePage() {
+// Re-fetch projects from Supabase at most once a minute
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const projects = await getProjects();
+
   return (
     <main className="relative z-10 min-h-screen text-white">
       <ScrollSpyNav />
@@ -15,7 +21,7 @@ export default function HomePage() {
       <AboutSection />
       <WhyMeSection />
       <ServicesSection />
-      <WorkSection />
+      <WorkSection projects={projects} />
       <ContactSection />
       <Footer />
     </main>

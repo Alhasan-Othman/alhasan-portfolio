@@ -128,7 +128,7 @@ export function ScrollSpyNav() {
                 } bg-white/95 dark:bg-zinc-900/95 text-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-800 backdrop-blur-sm`}
               >
                 <span className="text-emerald-600 dark:text-emerald-400 font-semibold mr-1">
-                  0{index + 1} //
+                  {`0${index + 1} //`}
                 </span>{" "}
                 {labelText}
               </div>

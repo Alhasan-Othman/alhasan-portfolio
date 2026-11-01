@@ -2,17 +2,17 @@ export const siteConfig = {
   name: "ALHASAN",
   domainExtension: ".DEV",
   fullName: "ALHASAN OTHMAN",
-  title: "ALHASAN OTHMAN — Software Developer & Security Specialist",
+  title: "ALHASAN OTHMAN — Software & Systems Engineer",
   description:
     "Web applications, intelligent systems, and security-driven digital products.",
   location: "SYRIA / WORLDWIDE",
   availability: "AVAILABLE FOR SELECTED PROJECTS",
-  roles: ["SOFTWARE DEVELOPER", "SECURITY", "DIGITAL SYSTEMS"],
+  roles: ["SOFTWARE ENGINEER", "SYSTEMS", "SECURITY"],
+  cv: "/Alhasan_Othman_CV.pdf",
   links: {
     github: "https://github.com/Alhasan-Othman",
-    linkedin: "https://linkedin.com/in/your-profile",
     whatsapp: "https://wa.me/+963938997544",
-    email: "mailto:alhasan.othman@gmail.com",
+    email: "mailto:alhasan.othman04@gmail.com",
   },
   footerColumns: [
     {

@@ -1,25 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useLanguage } from "@/context/language-context";
 import { FadeIn } from "@/components/ui/fade-in";
 import DepthCarousel, { DepthItem } from "@/components/ui/visuals/DepthCarousel";
-import { getProjects } from "@/lib/projects";
 import { Project } from "@/types";
 
-export function WorkSection() {
+export function WorkSection({ projects: dbProjects }: { projects: Project[] }) {
   const { language } = useLanguage();
-  const [dbProjects, setDbProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchProjects() {
-      const projects = await getProjects();
-      setDbProjects(projects);
-      setLoading(false);
-    }
-    fetchProjects();
-  }, []);
 
   const badgeText = language === "ar" ? "04 // الأعمال المختارة" : "04 // SELECTED WORK";
   const headingText = language === "ar" ? "المشاريع المميزة" : "FEATURED PROJECTS";
@@ -62,12 +49,7 @@ export function WorkSection() {
 
       <FadeIn delay={0.2}>
         <div className="w-full h-[540px] sm:h-[600px] relative flex items-center justify-center">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center gap-3 text-zinc-500 font-mono text-xs">
-              <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-              <span>[ LOADING PROJECTS... ]</span>
-            </div>
-          ) : formattedProjects.length > 0 ? (
+          {formattedProjects.length > 0 ? (
             <DepthCarousel
               items={formattedProjects}
               cardWidth={500}

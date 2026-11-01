@@ -7,7 +7,6 @@ import { useLanguage } from "@/context/language-context";
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isDark, setIsDark] = useState(true);
 
   const { language, toggleLanguage } = useLanguage();
 
@@ -35,10 +34,6 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const toggleTheme = () => {
-    setIsDark((prev) => !prev);
-  };
 
   return (
     <header

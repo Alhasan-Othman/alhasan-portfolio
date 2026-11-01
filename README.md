@@ -1,15 +1,15 @@
 <div align="center">
 
   <h1>ALHASAN.DEV</h1>
-  <p><strong>Software Developer & Security Specialist Portfolio</strong></p>
+  <p><strong>Software & Systems Engineer Portfolio</strong></p>
 
   <p>
-    A high-performance, modern, and security-driven digital portfolio built with Next.js 14, TypeScript, and Tailwind CSS.
+    A high-performance, modern, and security-driven digital portfolio built with Next.js 16, TypeScript, and Tailwind CSS.
   </p>
 
   <p>
     <a href="https://github.com/Alhasan-Othman"><strong>GitHub Profile</strong></a> •
-    <a href="alhasan.othman04@gmail.com"><strong>Contact Email</strong></a>
+    <a href="mailto:alhasan.othman04@gmail.com"><strong>Contact Email</strong></a>
   </p>
 
   <br />
@@ -23,7 +23,7 @@ This repository contains the source code for my personal portfolio platform. It 
 
 ### ✨ Key Features
 
-- **⚡ Modern Tech Stack**: Built on Next.js 14 App Router, TypeScript, and Tailwind CSS.
+- **⚡ Modern Tech Stack**: Built on Next.js 16 App Router, React 19, TypeScript, and Tailwind CSS 4.
 - **🎨 Sleek Dark Theme**: Minimalist, security-focused UI with smooth micro-interactions.
 - **📱 Fully Responsive**: Optimized for all viewports from mobile devices to large desktop monitors.
 - **🌐 Dual-Language Ready**: Built-in support for English (EN) and Arabic (AR) toggling.
@@ -36,7 +36,8 @@ This repository contains the source code for my personal portfolio platform. It 
 - **Framework**: [Next.js](https://nextjs.org/) (App Router)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components**: Framer Motion
+- **Animation & Visuals**: Framer Motion, GSAP, Three.js
+- **Backend**: [Supabase](https://supabase.com/) (projects and contact messages)
 - **Deployment**: [Vercel](https://vercel.com/)
 
 ---
@@ -49,21 +50,27 @@ Follow these steps to run the project on your local machine:
 
 Make sure you have Node.js installed on your machine:
 
-`node -v` (Recommended: Node.js 18+)
+`node -v` (Recommended: Node.js 20+)
 
 ### Installation & Setup
 
 1. **Clone the repository:**
-   `git clone https://github.com/Alhasan-Othman/YOUR-REPO-NAME.git`
-   `cd YOUR-REPO-NAME`
+   `git clone https://github.com/Alhasan-Othman/Alhasan-Portfolio.git`
+   `cd Alhasan-Portfolio`
 
 2. **Install dependencies:**
    `npm install`
 
-3. **Run the development server:**
+3. **Configure environment variables** in `.env.local`:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+   ```
+
+4. **Run the development server:**
    `npm run dev`
 
-4. Open `http://localhost:3000` in your browser to see the result.
+5. Open `http://localhost:3000` in your browser to see the result.
 
 ---
 
